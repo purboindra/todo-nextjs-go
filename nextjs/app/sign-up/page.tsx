@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import LoadingButton from "@/components/LoadingButton";
+import { signUp } from "../api/auth/action";
 
 const formSchema = z.object({
   email: z.string().refine((val) => val.includes("@"), "Email is not valid"),
@@ -40,20 +41,32 @@ export default function SignUp() {
     formState: { isSubmitting },
   } = form;
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const formData = new FormData();
+
+    Object.entries(values).forEach(([key, val]) => {
+      if (val) {
+        formData.append(key, val);
+      }
+    });
+
+    try {
+      await signUp(formData);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
-    <main className="flex min-h-screen flex-row">
-      <div className="w-2/3 bg-red-200"></div>
+    <main className="flex min-h-screen lg:flex-row">
+      <div className="bg-blue-200 hidden lg:flex items-center justify-center">
+        <h1>HEllo</h1>
+      </div>
       <div className=" w-full flex flex-col p-12 items-center justify-center">
         <h1 className="text-2xl font-bold text-neutral-800">Create Account</h1>
         <div className="mt-4 flex flex-col w-1/2">
           <Form {...form}>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <FormField
                 control={control}
                 name="email"
@@ -96,7 +109,7 @@ export default function SignUp() {
                   </FormItem>
                 )}
               />
-              <LoadingButton loading={false}>Sign Up</LoadingButton>
+              <LoadingButton loading={isSubmitting}>Sign Up</LoadingButton>
             </form>
           </Form>
         </div>
