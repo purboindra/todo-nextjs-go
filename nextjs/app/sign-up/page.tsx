@@ -70,9 +70,9 @@ export default function SignUp() {
 
   return (
     <main className="flex min-h-screen lg:flex-row">
-      <div className="bg-blue-200 hidden lg:flex items-center justify-center">
+      {/* <div className="bg-blue-200 hidden lg:flex items-center justify-center">
         <h1>HEllo</h1>
-      </div>
+      </div> */}
       <div className=" w-full flex flex-col p-12 items-center justify-center">
         <h1 className="text-2xl font-bold text-neutral-800">Create Account</h1>
         <div className="mt-4 flex flex-col w-1/2">
