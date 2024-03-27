@@ -2,7 +2,6 @@
 
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import { error } from "console";
 
 export async function signUp(formData: FormData) {
   try {
