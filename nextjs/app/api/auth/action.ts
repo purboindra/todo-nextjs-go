@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
 export async function signUp(formData: FormData) {
   try {
@@ -16,8 +17,15 @@ export async function signUp(formData: FormData) {
         username: value.username,
       }),
     });
-    console.log(`RESP SIGN UP: ${res.json()}`);
-    console.log(`RESP: ${res.text()}`);
+
+    if (res.status != 200) {
+      throw new Error("Sorry, something went wrong. Try again!");
+    }
+
+    const data = await res.json();
+
+    cookies().set("token", data.token, { secure: true });
+
     redirect("/");
   } catch (error: any) {
     throw error;

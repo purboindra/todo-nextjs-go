@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import LoadingButton from "@/components/LoadingButton";
 import { signUp } from "../api/auth/action";
+import { useToast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
   email: z.string().refine((val) => val.includes("@"), "Email is not valid"),
@@ -24,6 +25,7 @@ const formSchema = z.object({
 });
 
 export default function SignUp() {
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -52,8 +54,17 @@ export default function SignUp() {
 
     try {
       await signUp(formData);
+      toast({
+        title: "Success!",
+        description: "Sign up success!",
+      });
     } catch (error) {
       console.error(error);
+      toast({
+        variant: "destructive",
+        title: "Error!",
+        description: "Something went wrong, try again later",
+      });
     }
   }
 
