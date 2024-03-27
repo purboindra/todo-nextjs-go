@@ -12,6 +12,7 @@ import (
 
 func signup(ctx *gin.Context) {
 	db.InitDB()
+	utils.EnableCors(ctx)
 
 	var user models.User
 
