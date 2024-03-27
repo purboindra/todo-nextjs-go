@@ -37,7 +37,7 @@ export async function signIn(formData: FormData) {
   try {
     const value = Object.fromEntries(formData);
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}signup`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}signin`, {
       method: "POST",
       body: JSON.stringify({
         email: value.email,
