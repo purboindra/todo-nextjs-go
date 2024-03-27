@@ -46,10 +46,7 @@ export async function signIn(formData: FormData) {
     });
 
     if (res.status != 200) {
-      // throw new Error("Sorry, something went wrong. Try again");
-      return {
-        message: "Errro",
-      };
+      throw new Error("Sorry, something went wrong. Try again");
     }
 
     const data = await res.json();
