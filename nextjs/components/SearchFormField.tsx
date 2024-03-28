@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import LoadingButton from "./LoadingButton";
 
 export default function SearchFormField() {
   const searchSchema = z.object({
