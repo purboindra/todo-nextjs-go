@@ -21,15 +21,27 @@ export default function TodoItem() {
           </label>
         </div>
         <div className="flex flex-row gap-4">
-          <PencilIcon size={18} className="text-neutral-500" />
-          <Trash2 size={18} className="text-neutral-500" />
+          <PencilIcon
+            size={18}
+            className="text-neutral-500 hover:cursor-pointer hover:text-neutral-600"
+          />
+          <Trash2
+            size={18}
+            className="text-neutral-500 hover:cursor-pointer hover:text-neutral-600"
+          />
         </div>
       </span>
       <p className="text-sm text-neutral-500 mt-2 truncate">
         Learn go and next js for my goals become a software engineer Learn
       </p>
-      <div className="mt-2">
-        <FormattedDate value={currentDate} />
+      <div className="mt-2 text-neutral-500 text-sm">
+        <FormattedDate
+          value={currentDate}
+          year="numeric"
+          month="long"
+          day="numeric"
+          weekday="long"
+        />
       </div>
     </div>
   );
