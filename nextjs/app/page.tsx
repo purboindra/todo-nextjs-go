@@ -1,3 +1,4 @@
+import AddTodoButton from "@/components/AddTodoButton";
 import SearchFormField from "@/components/SearchFormField";
 import TodoItem from "@/components/TodoItem";
 import { Button } from "@/components/ui/button";
@@ -10,7 +11,7 @@ export default function Home() {
       </h1>
       <div className="mt-5 space-y-3">
         <SearchFormField />
-        <Button className="flex">Add Todo</Button>
+        <AddTodoButton />
       </div>
       <div className="px-5 items-center flex flex-col space-y-3">
         <TodoItem />
