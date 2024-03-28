@@ -2,8 +2,12 @@
 
 import { PencilIcon, Trash2 } from "lucide-react";
 import { Checkbox } from "./ui/checkbox";
+import { FormattedDate } from "react-intl";
 
 export default function TodoItem() {
+  // DUMMY
+  const currentDate = new Date();
+
   return (
     <div className="px-3 py-2 rounded border-neutral-400 border-[1px] w-full h-24">
       <span className="flex justify-between">
@@ -24,6 +28,9 @@ export default function TodoItem() {
       <p className="text-sm text-neutral-500 mt-2 truncate">
         Learn go and next js for my goals become a software engineer Learn
       </p>
+      <div className="mt-2">
+        <FormattedDate value={currentDate} />
+      </div>
     </div>
   );
 }
