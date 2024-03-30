@@ -1,5 +1,17 @@
+"use server";
+
+import { cookies } from "next/headers";
+
 export async function addTodo(formData: FormData) {
+  const cookieStore = cookies();
+
   try {
+    const token = cookieStore.get("token");
+
+    if (!token) {
+      throw new Error("Unatuhorized!");
+    }
+
     const values = Object.fromEntries(formData);
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}add-todo`, {
@@ -9,10 +21,8 @@ export async function addTodo(formData: FormData) {
         description: values.description,
       }),
       headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-        "Access-Control-Allow-Headers":
-          "Content-Type, Authorization, X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Date, X-Api-Version",
+        "Content-Type": "application/json",
+        Authorization: token.value,
       },
     });
 

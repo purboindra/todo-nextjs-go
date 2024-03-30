@@ -8,6 +8,8 @@ import (
 
 func RegisterRoutes(server *gin.Engine) {
 
+	server.Use(middlewares.CORSMiddleware())
+
 	authenticate := server.Group("/")
 
 	authenticate.Use(middlewares.Authenticate)
