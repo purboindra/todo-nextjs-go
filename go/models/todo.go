@@ -31,7 +31,6 @@ func (todo *Todo) AddTodo() error {
 
 	if err != nil {
 		log.Println("ERROR EXEC", err.Error())
-
 		return err
 	}
 

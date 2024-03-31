@@ -29,6 +29,8 @@ func createTodo(ctx *gin.Context) {
 
 	todo.UserId = strconv.FormatInt(userId, 10)
 
+	todo.Created_at = time.Now().Format("2006-01-02 15:04:05")
+
 	err = todo.AddTodo()
 
 	if err != nil {

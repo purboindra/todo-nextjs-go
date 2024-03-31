@@ -7,8 +7,8 @@ interface UseDialogProps {
   onClose: () => void;
   type: ModalType;
   setType: (type: ModalType) => void;
-  todo?: TodoType;
-  setTodo: (todo: TodoType) => void;
+  todo?: TodoType | null;
+  setTodo: (todo: TodoType | null) => void;
 }
 
 const useDialog = create<UseDialogProps>((set) => ({
@@ -17,8 +17,11 @@ const useDialog = create<UseDialogProps>((set) => ({
   onClose: () => set({ isOpen: false }),
   type: ModalType.Add,
   setType: (type) => set({ type }),
-  todo: undefined,
-  setTodo: (todo: TodoType) => set({ todo: todo }),
+  todo: null,
+  setTodo: (todo: TodoType | null) => {
+    console.log(`TODO FROM ZUSTAND: ${todo?.title}`);
+    return set({ todo: todo });
+  },
 }));
 
 export default useDialog;

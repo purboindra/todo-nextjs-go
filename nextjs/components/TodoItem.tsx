@@ -36,9 +36,9 @@ export default function TodoItem({ todo }: TodoItemInterface) {
           <PencilIcon
             size={18}
             onClick={() => {
+              setTodo(todo);
               onOpen();
               setType(ModalType.Edit);
-              setTodo(todo);
             }}
             className="text-neutral-500 hover:cursor-pointer hover:text-neutral-600"
           />

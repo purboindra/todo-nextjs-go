@@ -1,5 +1,7 @@
+"use client";
+
 import UseDialog from "@/hooks/useDialog";
-import { ModalType, TodoType } from "@/lib/type";
+import { TodoType } from "@/lib/type";
 import Modal from "./Modal";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -14,25 +16,45 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import LoadingButton from "@/components/LoadingButton";
 import { editTodo } from "../api/todo/actions";
-
-interface EditTodoModalInterface {
-  todo: TodoType;
-}
-
-const EditTodoSchema = z.object({
-  isComplete: z.boolean(),
-  title: z.string().min(1, "Title is required"),
-  description: z.string().min(1, "Description is required"),
-});
+import { useEffect, useState } from "react";
 
 export default function EditTodoModal() {
-  const { isOpen, onOpen, onClose, todo } = UseDialog();
+  const { isOpen, onOpen, onClose, todo, setTodo } = UseDialog();
+  const [newTodo, setNewTodo] = useState<TodoType>({
+    title: "",
+    created_at: "",
+    description: "",
+    id: "",
+    isComplete: false,
+    updated_at: "",
+    user_id: "",
+  });
+
+  useEffect(() => {
+    if (todo !== null) {
+      setNewTodo(todo!);
+    }
+
+    return () => {};
+  }, [newTodo, setTodo, todo]);
+
+  const EditTodoSchema = z.object({
+    isComplete: z.boolean(),
+    title: z
+      .string()
+      .min(1, "Title is required")
+      .default(todo?.title ?? "No Title"),
+    description: z
+      .string()
+      .min(1, "Description is required")
+      .default(todo?.description ?? "No Desc"),
+  });
 
   const form = useForm<z.infer<typeof EditTodoSchema>>({
     defaultValues: {
-      isComplete: false,
-      title: "",
-      description: "",
+      isComplete: todo?.isComplete,
+      title: todo?.title,
+      description: todo?.description,
     },
   });
 
@@ -41,6 +63,7 @@ export default function EditTodoModal() {
     const data = JSON.stringify(values);
     formData.append("data", data);
     await editTodo(formData, todo?.id ?? "");
+    // revalidatePath("/");
   };
 
   const handleOpen = () => {
@@ -49,6 +72,7 @@ export default function EditTodoModal() {
     } else {
       onClose();
       form.reset();
+      setTodo(null);
     }
   };
 
@@ -80,7 +104,7 @@ export default function EditTodoModal() {
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} defaultValue={todo?.description} />
                 </FormControl>
               </FormItem>
             )}
@@ -109,7 +133,9 @@ export default function EditTodoModal() {
             )}
           />
 
-          <LoadingButton loading={false}>Edit Todo</LoadingButton>
+          <LoadingButton loading={form.formState.isSubmitting}>
+            Edit Todo
+          </LoadingButton>
         </form>
       </Form>
     </Modal>

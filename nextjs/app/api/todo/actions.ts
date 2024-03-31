@@ -148,8 +148,6 @@ export async function editTodo(formData: FormData, id: string) {
       }
     );
 
-    console.log(`RESPONSE UPDATE TODO: ${result.status} -- ${result.body}`);
-
     if (result.status == 401) {
       cookiesStore.delete("token");
       throw new Error("Unauthorized!");
@@ -160,6 +158,44 @@ export async function editTodo(formData: FormData, id: string) {
     }
 
     revalidatePath("/");
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getTodoById(id: string) {
+  try {
+    const cookiesStore = cookies();
+
+    const token = cookiesStore.get("token");
+
+    if (!token) {
+      redirect("/sign-in");
+    }
+
+    const result = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}get-todo/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: token.value,
+        },
+      }
+    );
+
+    if (result.status == 401) {
+      redirect("/sign-in");
+    }
+
+    if (result.status != 200) {
+      throw new Error("Sorry, something went wrong. Try again!");
+    }
+
+    const data = await result.json();
+
+    console.log(result.json());
+
+    return data.todo;
   } catch (error) {
     throw error;
   }
