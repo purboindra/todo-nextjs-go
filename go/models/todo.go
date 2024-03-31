@@ -3,16 +3,17 @@ package models
 import (
 	"example/todo/db"
 	"log"
+	"strconv"
 )
 
 type Todo struct {
-	ID          int64  `json:"id"`
+	ID          string `json:"id"`
 	Title       string `binding:"required" json:"title"`
 	Description string `binding:"required" json:"description"`
 	Created_at  string `json:"created_at"`
 	Updated_at  string `json:"updated_at"`
 	IsComplete  bool   `json:"isComplete"`
-	UserId      int64  `json:"user_id"`
+	UserId      string `json:"user_id"`
 }
 
 func (todo *Todo) AddTodo() error {
@@ -40,7 +41,7 @@ func (todo *Todo) AddTodo() error {
 		return err
 	}
 
-	todo.ID = id
+	todo.ID = strconv.FormatInt(id, 10)
 	return nil
 }
 

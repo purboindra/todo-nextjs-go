@@ -27,7 +27,7 @@ func createTodo(ctx *gin.Context) {
 
 	userId := ctx.GetInt64("userId")
 
-	todo.UserId = userId
+	todo.UserId = strconv.FormatInt(userId, 10)
 
 	err = todo.AddTodo()
 
@@ -65,7 +65,7 @@ func getTodoById(ctx *gin.Context) {
 
 	todo, err := models.GetTodoById(id)
 
-	if todo.UserId != userId {
+	if todo.UserId != strconv.FormatInt(userId, 10) {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 			"message": "Unauthorized",
 		})
@@ -144,7 +144,7 @@ func updateTodo(ctx *gin.Context) {
 	userId := ctx.GetInt64("userId")
 	// user, err := models.GetUserById(userId)
 
-	if todo.UserId != userId {
+	if todo.UserId != strconv.FormatInt(userId, 10) {
 		ctx.JSON(http.StatusUnauthorized, gin.H{
 			"message": errors.New("Unauthorized"),
 		})
@@ -155,7 +155,7 @@ func updateTodo(ctx *gin.Context) {
 
 	err = ctx.ShouldBindJSON(&updatedTodo)
 
-	if todo.UserId != userId {
+	if todo.UserId != strconv.FormatInt(userId, 10) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": err.Error(),
 		})
@@ -169,7 +169,7 @@ func updateTodo(ctx *gin.Context) {
 	updatedTodo.ID = todo.ID
 	updatedTodo.Updated_at = time.String()
 
-	if todo.UserId != userId {
+	if todo.UserId != strconv.FormatInt(userId, 10) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": err.Error(),
 		})
@@ -178,7 +178,7 @@ func updateTodo(ctx *gin.Context) {
 
 	err = updatedTodo.UpdateTodo()
 
-	if todo.UserId != userId {
+	if todo.UserId != strconv.FormatInt(userId, 10) {
 		ctx.JSON(http.StatusUnauthorized, gin.H{
 			"message": err,
 		})
@@ -226,7 +226,7 @@ func deleteTodo(ctx *gin.Context) {
 		return
 	}
 
-	if result.UserId != userId {
+	if result.UserId != strconv.FormatInt(userId, 10) {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 			"message": "Unauthorized",
 		})
