@@ -7,3 +7,8 @@ export type TodoType = {
   isComplete: boolean;
   user_id: string;
 };
+
+export enum ModalType {
+  Edit = "EDIT",
+  Add = "ADD",
+}

@@ -4,7 +4,7 @@ import { TodoType } from "@/lib/type";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { todo } from "node:test";
+import { string } from "zod";
 
 export async function addTodo(formData: FormData) {
   const cookieStore = cookies();
@@ -63,7 +63,7 @@ export async function getAllTodos() {
     });
 
     if (result.status == 401) {
-      cookiesStore.delete("token");
+      // cookiesStore.delete("token");
       throw new Error("Unauthorized!");
     }
 
@@ -85,8 +85,6 @@ export async function getAllTodos() {
 
 export async function deleteTodo(id: string) {
   try {
-    console.log(`TODO ID: ${id}`);
-
     const cookiesStore = cookies();
 
     const token = cookiesStore.get("token");
@@ -104,6 +102,53 @@ export async function deleteTodo(id: string) {
         },
       }
     );
+
+    if (result.status == 401) {
+      cookiesStore.delete("token");
+      throw new Error("Unauthorized!");
+    }
+
+    if (result.status != 200) {
+      throw new Error("Sorry, something went wrong. Try again!");
+    }
+
+    revalidatePath("/");
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function editTodo(formData: FormData, id: string) {
+  const data = formData.get("data");
+
+  const decodeData = JSON.parse(data!.toString());
+
+  try {
+    const cookiesStore = cookies();
+
+    const token = cookiesStore.get("token");
+
+    if (!token) {
+      redirect("/sign-in");
+    }
+
+    const result = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}update-todo/${id}`,
+      {
+        method: "PUT",
+        body: JSON.stringify({
+          id: id,
+          title: decodeData!.title,
+          description: decodeData.description,
+          isComplete: decodeData.isComplete,
+        }),
+        headers: {
+          Authorization: token.value,
+        },
+      }
+    );
+
+    console.log(`RESPONSE UPDATE TODO: ${result.status} -- ${result.body}`);
 
     if (result.status == 401) {
       cookiesStore.delete("token");

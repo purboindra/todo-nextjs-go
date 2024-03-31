@@ -142,7 +142,6 @@ func updateTodo(ctx *gin.Context) {
 	}
 
 	userId := ctx.GetInt64("userId")
-	// user, err := models.GetUserById(userId)
 
 	if todo.UserId != strconv.FormatInt(userId, 10) {
 		ctx.JSON(http.StatusUnauthorized, gin.H{
@@ -165,9 +164,12 @@ func updateTodo(ctx *gin.Context) {
 	time := time.Now()
 
 	log.Println("IS COMPLETE TODO", updatedTodo.IsComplete)
+	log.Println("TITLE TODO", updatedTodo.Title)
 
 	updatedTodo.ID = todo.ID
 	updatedTodo.Updated_at = time.String()
+	// updatedTodo.Title = todo.Title
+	// updatedTodo.Description = todo.Description
 
 	if todo.UserId != strconv.FormatInt(userId, 10) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{

@@ -87,9 +87,8 @@ func GetTodoById(id int64) (*Todo, error) {
 }
 
 func (todo *Todo) UpdateTodo() error {
-	log.Println("UPDATE TODO CALLED")
 	query := `
-UPDATE todos SET isComplete = ?, updated_at = ? WHERE id = ?
+UPDATE todos SET isComplete = ?,Title =?,Description=?, updated_at = ? WHERE id = ?
 `
 	smtm, err := db.DB.Prepare(query)
 
@@ -101,7 +100,7 @@ UPDATE todos SET isComplete = ?, updated_at = ? WHERE id = ?
 
 	defer smtm.Close()
 
-	result, err := smtm.Exec(todo.IsComplete, todo.Updated_at, todo.ID)
+	result, err := smtm.Exec(todo.IsComplete, todo.Title, todo.Description, todo.Updated_at, todo.ID)
 
 	log.Println("UPDATE TODO", result)
 
