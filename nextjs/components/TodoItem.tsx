@@ -4,6 +4,7 @@ import { PencilIcon, Trash2 } from "lucide-react";
 import { Checkbox } from "./ui/checkbox";
 import { FormattedDate } from "react-intl";
 import { TodoType } from "@/lib/type";
+import { deleteTodo } from "@/app/api/todo/actions";
 
 interface TodoItemInterface {
   todo: TodoType;
@@ -12,6 +13,10 @@ interface TodoItemInterface {
 export default function TodoItem({ todo }: TodoItemInterface) {
   // DUMMY
   const currentDate = new Date(todo.created_at);
+
+  const deletedTodo = async (id: string) => {
+    deleteTodo(id);
+  };
 
   return (
     <div className="px-3 py-2 rounded border-neutral-400 border-[1px] w-full h-24">
@@ -31,6 +36,7 @@ export default function TodoItem({ todo }: TodoItemInterface) {
             className="text-neutral-500 hover:cursor-pointer hover:text-neutral-600"
           />
           <Trash2
+            onClick={async () => await deletedTodo(todo.id)}
             size={18}
             className="text-neutral-500 hover:cursor-pointer hover:text-neutral-600"
           />

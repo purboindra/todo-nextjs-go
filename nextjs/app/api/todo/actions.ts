@@ -4,6 +4,7 @@ import { TodoType } from "@/lib/type";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { todo } from "node:test";
 
 export async function addTodo(formData: FormData) {
   const cookieStore = cookies();
@@ -77,6 +78,43 @@ export async function getAllTodos() {
     }
 
     return todos;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function deleteTodo(id: string) {
+  try {
+    console.log(`TODO ID: ${id}`);
+
+    const cookiesStore = cookies();
+
+    const token = cookiesStore.get("token");
+
+    if (!token) {
+      redirect("/sign-in");
+    }
+
+    const result = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}delete-todo/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: token.value,
+        },
+      }
+    );
+
+    if (result.status == 401) {
+      cookiesStore.delete("token");
+      throw new Error("Unauthorized!");
+    }
+
+    if (result.status != 200) {
+      throw new Error("Sorry, something went wrong. Try again!");
+    }
+
+    revalidatePath("/");
   } catch (error) {
     throw error;
   }
