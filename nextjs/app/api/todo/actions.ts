@@ -1,6 +1,7 @@
 "use server";
 
 import { TodoType } from "@/lib/type";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -34,6 +35,8 @@ export async function addTodo(formData: FormData) {
       cookieStore.delete("token");
       throw new Error("Sorry, something went wrong. Try again!");
     }
+
+    revalidatePath("/");
 
     console.log(`SUCCESS ADD TODO: ${res.status}`);
   } catch (error) {
