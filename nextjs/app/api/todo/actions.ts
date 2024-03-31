@@ -1,5 +1,6 @@
 "use server";
 
+import { TodoType } from "@/lib/type";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -35,6 +36,41 @@ export async function addTodo(formData: FormData) {
     }
 
     console.log(`SUCCESS ADD TODO: ${res.status}`);
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getAllTodos() {
+  try {
+    let todos: TodoType[] = [];
+
+    const cookiesStore = cookies();
+
+    const token = cookiesStore.get("token");
+
+    if (!token) {
+      redirect("/sign-in");
+    }
+
+    const result = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}get-todos`, {
+      method: "GET",
+      headers: {
+        Authorization: token.value,
+      },
+    });
+
+    if (result.status != 200) {
+      throw new Error("Sorry, something went wrong. Try again!");
+    }
+
+    const data = await result.json();
+
+    for (const todo of data.data) {
+      todos.push(todo);
+    }
+
+    return todos;
   } catch (error) {
     throw error;
   }
