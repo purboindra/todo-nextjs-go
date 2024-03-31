@@ -6,13 +6,13 @@ import (
 )
 
 type Todo struct {
-	ID          int64
-	Title       string `binding:"required"`
-	Description string `binding:"required"`
-	Created_at  string
-	Updated_at  string
-	IsComplete  bool
-	UserId      int64
+	ID          int64  `json:"id"`
+	Title       string `binding:"required" json:"title"`
+	Description string `binding:"required" json:"description"`
+	Created_at  string `json:"created_at"`
+	Updated_at  string `json:"updated_at"`
+	IsComplete  bool   `json:"isComplete"`
+	UserId      int64  `json:"user_id"`
 }
 
 func (todo *Todo) AddTodo() error {
