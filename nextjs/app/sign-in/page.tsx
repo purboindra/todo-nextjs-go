@@ -53,7 +53,7 @@ export default function SignIn() {
   }
 
   return (
-    <main className="flex min-h-screen max-w-5xl justify-center items-center">
+    <main className="flex min-h-screen justify-center items-center">
       <div className="rounded-md shadow-lg p-12 flex flex-col items-center justify-center">
         <h1 className="text-lg font-semibold text-neutral-700">Sign In</h1>
         <Form {...form}>

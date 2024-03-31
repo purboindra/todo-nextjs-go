@@ -1,6 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export async function addTodo(formData: FormData) {
   const cookieStore = cookies();
@@ -9,7 +10,7 @@ export async function addTodo(formData: FormData) {
     const token = cookieStore.get("token");
 
     if (!token) {
-      throw new Error("Unatuhorized!");
+      redirect("/sign-in");
     }
 
     const values = Object.fromEntries(formData);
@@ -26,7 +27,10 @@ export async function addTodo(formData: FormData) {
       },
     });
 
+    console.log(`RESP ADD TODO: ${res.status} -- ${res.body}`);
+
     if (res.status != 200) {
+      cookieStore.delete("token");
       throw new Error("Sorry, something went wrong. Try again!");
     }
 

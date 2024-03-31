@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import IntlProviders from "../providers/IntProviders";
 import ModalProvider from "@/providers/ModalProvider";
+import { CookiesProvider } from "next-client-cookies/server";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,9 +21,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <IntlProviders>
-        <body className={inter.className}>
+        <body className={`${inter.className} min-w[350px]`}>
           <ModalProvider />
           {children}
+          {/* <CookiesProvider ></CookiesProvider> */}
           <Toaster />
         </body>
       </IntlProviders>

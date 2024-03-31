@@ -1,3 +1,5 @@
+"use client";
+
 import UseDialog from "@/hooks/useDialog";
 import Modal from "./Modal";
 import {
@@ -13,6 +15,8 @@ import { Input } from "@/components/ui/input";
 import LoadingButton from "@/components/LoadingButton";
 import { addTodo } from "../api/todo/actions";
 import { toast } from "@/components/ui/use-toast";
+import { useCookies } from "next-client-cookies";
+import { redirect } from "next/navigation";
 
 const todoSchema = z.object({
   title: z.string().min(1, "Please enter a text"),
@@ -20,6 +24,7 @@ const todoSchema = z.object({
 });
 export default function AddTodoModal() {
   const { isOpen, onOpen, onClose } = UseDialog();
+  // const cookie = useCookies();
 
   const form = useForm<z.infer<typeof todoSchema>>({
     defaultValues: {
