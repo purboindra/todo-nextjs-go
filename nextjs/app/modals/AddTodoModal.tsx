@@ -49,6 +49,9 @@ export default function AddTodoModal() {
         title: "Success",
         description: "Todo has successfully created!",
       });
+
+      onClose();
+      form.reset();
     } catch (error) {
       console.log(error);
       toast({
