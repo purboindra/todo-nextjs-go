@@ -37,8 +37,6 @@ export async function addTodo(formData: FormData) {
     }
 
     revalidatePath("/");
-
-    console.log(`SUCCESS ADD TODO: ${res.status}`);
   } catch (error) {
     throw error;
   }
@@ -62,6 +60,10 @@ export async function getAllTodos() {
         Authorization: token.value,
       },
     });
+
+    if (result.status == 401) {
+      throw new Error("Unauthorized!");
+    }
 
     if (result.status != 200) {
       throw new Error("Sorry, something went wrong. Try again!");
