@@ -1,7 +1,6 @@
 import AddTodoButton from "@/components/AddTodoButton";
 import SearchFormField from "@/components/SearchFormField";
 import TodoItem from "@/components/TodoItem";
-import { Button } from "@/components/ui/button";
 import { getAllTodos } from "./api/todo/actions";
 
 export default async function Home() {
@@ -17,8 +16,9 @@ export default async function Home() {
         <AddTodoButton />
       </div>
       <div className="px-5 items-center flex flex-col space-y-3">
-        <TodoItem />
-        <TodoItem />
+        {todos.map((todo, index) => (
+          <TodoItem key={index} todo={todo} />
+        ))}
       </div>
     </main>
   );

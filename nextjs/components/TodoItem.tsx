@@ -3,10 +3,15 @@
 import { PencilIcon, Trash2 } from "lucide-react";
 import { Checkbox } from "./ui/checkbox";
 import { FormattedDate } from "react-intl";
+import { TodoType } from "@/lib/type";
 
-export default function TodoItem() {
+interface TodoItemInterface {
+  todo: TodoType;
+}
+
+export default function TodoItem({ todo }: TodoItemInterface) {
   // DUMMY
-  const currentDate = new Date();
+  const currentDate = new Date(todo.created_at);
 
   return (
     <div className="px-3 py-2 rounded border-neutral-400 border-[1px] w-full h-24">
@@ -17,7 +22,7 @@ export default function TodoItem() {
             htmlFor="todo-1"
             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           >
-            Accept terms and conditions
+            {todo.title}
           </label>
         </div>
         <div className="flex flex-row gap-4">
@@ -32,7 +37,7 @@ export default function TodoItem() {
         </div>
       </span>
       <p className="text-sm text-neutral-500 mt-2 truncate">
-        Learn go and next js for my goals become a software engineer Learn
+        {todo.description}
       </p>
       <div className="mt-2 text-neutral-500 text-sm">
         <FormattedDate
