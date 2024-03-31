@@ -24,7 +24,7 @@ export default function TodoItem({ todo }: TodoItemInterface) {
     <div className="px-3 py-2 rounded border-neutral-400 border-[1px] w-full h-24">
       <span className="flex justify-between">
         <div className="flex items-center space-x-2">
-          <Checkbox id={todo.id} checked={todo.isComplete} />
+          <Checkbox id={todo.id} checked={todo.isComplete} disabled />
           <label
             htmlFor="todo-1"
             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
