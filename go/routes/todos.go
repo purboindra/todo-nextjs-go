@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -170,8 +171,6 @@ func updateTodo(ctx *gin.Context) {
 
 	updatedTodo.ID = todo.ID
 	updatedTodo.Updated_at = time.String()
-	// updatedTodo.Title = todo.Title
-	// updatedTodo.Description = todo.Description
 
 	if todo.UserId != strconv.FormatInt(userId, 10) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
@@ -214,13 +213,6 @@ func deleteTodo(ctx *gin.Context) {
 		return
 	}
 
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"message": err.Error(),
-		})
-		return
-	}
-
 	result, err := models.GetTodoById(todoId)
 
 	if err != nil {
@@ -248,6 +240,48 @@ func deleteTodo(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "Todo was deleted successfully",
+	})
+
+}
+
+func searchTodo(ctx *gin.Context) {
+
+	query := ctx.Query("q")
+
+	log.Println("QUERY IS", query)
+
+	userId, err := utils.VerifyToken(ctx.Request.Header.Get("Authorization"))
+
+	if err != nil {
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	var searchResults []models.Todo
+
+	searchResults = searchResults[:0]
+
+	results, err := models.SearchTodo(query, userId)
+
+	if err != nil {
+		log.Println("Error searching todo:", err)
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	for _, data := range results {
+		if strings.Contains(data.Title, query) {
+			searchResults = append(searchResults, data)
+		}
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": "Success get todos",
+		"data":    searchResults,
 	})
 
 }

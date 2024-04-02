@@ -110,7 +110,7 @@ UPDATE todos SET isComplete = ?,Title =?,Description=?, updated_at = ? WHERE id 
 	return nil
 }
 
-func (todo Todo) DeleteTodo() error {
+func (todo *Todo) DeleteTodo() error {
 	query := `DELETE FROM todos where id = ?`
 
 	stmt, err := db.DB.Prepare(query)
@@ -128,4 +128,38 @@ func (todo Todo) DeleteTodo() error {
 	}
 
 	return nil
+}
+
+func SearchTodo(q string, userId int64) ([]Todo, error) {
+	query := `SELECT * FROM todos WHERE user_id = ? AND title LIKE ?`
+
+	var todos []Todo
+
+	rows, err := db.DB.Query(query, userId, "%"+q+"%")
+
+	log.Println("ERROR QUERY PREPARE", err)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var t Todo
+		if err := rows.Scan(&t.ID, &t.Title, &t.Description, &t.Created_at, &t.Updated_at, &t.UserId, &t.IsComplete); err != nil {
+			return nil, err
+		}
+
+		log.Println("SEARCHHHHH", t)
+
+		todos = append(todos, t)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	log.Println("ERROR EXEC QUERY", err)
+
+	return todos, nil
 }

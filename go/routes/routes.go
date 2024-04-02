@@ -18,6 +18,8 @@ func RegisterRoutes(server *gin.Engine) {
 	server.POST("/signin", signin)
 	server.GET("/get-user/:id", getUserById)
 
+	server.GET("/todos", searchTodo)
+
 	authenticate.POST("/add-todo", createTodo)
 	authenticate.GET("/get-todos", getTodos)
 	authenticate.GET("/get-todo/:id", getTodoById)
