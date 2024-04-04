@@ -1,10 +1,17 @@
 import AddTodoButton from "@/components/AddTodoButton";
 import SearchFormField from "@/components/SearchFormField";
 import TodoItem from "@/components/TodoItem";
-import { getAllTodos } from "./api/todo/actions";
+import { getAllTodos, searchTodo } from "./api/todo/actions";
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams?: {
+    query?: string;
+  };
+}) {
   const todos = await getAllTodos();
+  const result = await searchTodo(searchParams?.query || "");
 
   return (
     <main className="max-w-5xl m-auto my-12 space-y-10">
@@ -16,7 +23,7 @@ export default async function Home() {
         <AddTodoButton />
       </div>
       <div className="px-5 items-center flex flex-col space-y-3">
-        {todos.map((todo, index) => (
+        {(result.length === 0 ? todos : result).map((todo, index) => (
           <TodoItem key={index} todo={todo} />
         ))}
       </div>

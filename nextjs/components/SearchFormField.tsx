@@ -31,9 +31,9 @@ export default function SearchFormField() {
 
     replace(`${pathname}?${params.toString()}`);
 
-    const result = await searchTodo(values.search);
+    // const result = await searchTodo(values.search);
 
-    console.log(result);
+    // console.log(result);
   }
 
   return (
