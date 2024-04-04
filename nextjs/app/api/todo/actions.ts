@@ -12,10 +12,6 @@ export async function addTodo(formData: FormData) {
   try {
     const token = cookieStore.get("token");
 
-    if (!token) {
-      redirect("/sign-in");
-    }
-
     const values = Object.fromEntries(formData);
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}add-todo`, {
@@ -26,7 +22,7 @@ export async function addTodo(formData: FormData) {
       }),
       headers: {
         "Content-Type": "application/json",
-        Authorization: token.value,
+        Authorization: token!.value,
       },
     });
 
@@ -52,7 +48,7 @@ export async function getAllTodos() {
     const token = cookiesStore.get("token");
 
     if (!token) {
-      redirect("/sign-in");
+      throw new Error("Unauthorized");
     }
 
     const result = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}get-todos`, {
@@ -89,16 +85,12 @@ export async function deleteTodo(id: string) {
 
     const token = cookiesStore.get("token");
 
-    if (!token) {
-      redirect("/sign-in");
-    }
-
     const result = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}delete-todo/${id}`,
       {
         method: "DELETE",
         headers: {
-          Authorization: token.value,
+          Authorization: token!.value,
         },
       }
     );
@@ -128,10 +120,6 @@ export async function editTodo(formData: FormData, id: string) {
 
     const token = cookiesStore.get("token");
 
-    if (!token) {
-      redirect("/sign-in");
-    }
-
     const result = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}update-todo/${id}`,
       {
@@ -143,7 +131,7 @@ export async function editTodo(formData: FormData, id: string) {
           isComplete: decodeData.isComplete,
         }),
         headers: {
-          Authorization: token.value,
+          Authorization: token!.value,
         },
       }
     );
@@ -169,16 +157,12 @@ export async function getTodoById(id: string) {
 
     const token = cookiesStore.get("token");
 
-    if (!token) {
-      redirect("/sign-in");
-    }
-
     const result = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}get-todo/${id}`,
       {
         method: "DELETE",
         headers: {
-          Authorization: token.value,
+          Authorization: token!.value,
         },
       }
     );
