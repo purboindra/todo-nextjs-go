@@ -6,17 +6,19 @@ export function middleware(request: NextRequest) {
 
   const token = cookies.get("token")?.value;
 
-  if (!token) {
-    return NextResponse.redirect(new URL("/sign-in", request.url));
-  }
+  console.log("TOKEN MIDDLEWARE", token);
 
-  if (
-    request.nextUrl.pathname.startsWith("/sign-in") ||
-    request.nextUrl.pathname.startsWith("/sign-up")
-  ) {
-    if (token) return NextResponse.redirect(new URL("/", request.url));
-    return NextResponse.next();
-  }
+  //   if (
+  //     request.nextUrl.pathname.startsWith("/sign-in") ||
+  //     request.nextUrl.pathname.startsWith("/sign-up")
+  //   ) {
+  //     if (token) return NextResponse.redirect(new URL("/", request.url));
+  //     return NextResponse.next();
+  //   }
+
+  //   if (!token) {
+  //     return NextResponse.redirect(new URL("/sign-in", request.url));
+  //   }
 
   return NextResponse.next();
 }

@@ -4,6 +4,7 @@ import { TodoType } from "@/lib/type";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { todo } from "node:test";
 import { string } from "zod";
 
 export async function addTodo(formData: FormData) {
@@ -181,6 +182,49 @@ export async function getTodoById(id: string) {
 
     return data.todo;
   } catch (error) {
+    throw error;
+  }
+}
+
+export async function searchTodo(query: string) {
+  console.log(`SEARCH TODO: ${query}`);
+
+  try {
+    const cookieStore = cookies();
+
+    const token = cookieStore.get("token")?.value;
+
+    if (!token) {
+      throw new Error("Unauthorized");
+    }
+
+    let todos: TodoType[] = [];
+
+    const result = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}todos?q=${query}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+
+    const data = await result.json();
+
+    console.log(`RESULT SEARCH: ${result.ok} -- ${data.data}`);
+
+    if (!result.ok) {
+      return [];
+    }
+
+    for (const todo of data.data) {
+      todos.push(todo);
+    }
+
+    return todos;
+  } catch (error) {
+    console.log("ERROR SEARCH TODO", error);
     throw error;
   }
 }

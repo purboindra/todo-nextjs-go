@@ -19,7 +19,6 @@ const useDialog = create<UseDialogProps>((set) => ({
   setType: (type) => set({ type }),
   todo: null,
   setTodo: (todo: TodoType | null) => {
-    console.log(`TODO FROM ZUSTAND: ${todo?.title}`);
     return set({ todo: todo });
   },
 }));

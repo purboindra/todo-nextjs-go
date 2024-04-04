@@ -5,10 +5,14 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "./ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import LoadingButton from "./LoadingButton";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { searchTodo } from "@/app/api/todo/actions";
 
 export default function SearchFormField() {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
   const searchSchema = z.object({
     search: z.string().min(1, "Please eter a text"),
   });
@@ -20,8 +24,16 @@ export default function SearchFormField() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof searchSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof searchSchema>) {
+    const params = new URLSearchParams(searchParams);
+
+    params.set("query", values.search);
+
+    replace(`${pathname}?${params.toString()}`);
+
+    const result = await searchTodo(values.search);
+
+    console.log(result);
   }
 
   return (
@@ -32,9 +44,13 @@ export default function SearchFormField() {
           name="search"
           render={({ field }) => (
             <FormItem {...field}>
-              <FormLabel>Search todo</FormLabel>
+              <FormLabel htmlFor="search">Search todo</FormLabel>
               <FormControl>
-                <Input placeholder="Find your activity..." />
+                <Input
+                  id="search"
+                  placeholder="Find your activity..."
+                  defaultValue={searchParams.get("query")?.toString()}
+                />
               </FormControl>
             </FormItem>
           )}
