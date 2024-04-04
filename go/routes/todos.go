@@ -279,9 +279,16 @@ func searchTodo(ctx *gin.Context) {
 		}
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{
-		"message": "Success get todos",
-		"data":    searchResults,
-	})
+	if len(searchResults) == 0 {
+		ctx.JSON(http.StatusOK, gin.H{
+			"message": "Success get todos",
+			"data":    []models.Todo{},
+		})
+	} else {
+		ctx.JSON(http.StatusOK, gin.H{
+			"message": "Success get todos",
+			"data":    searchResults,
+		})
+	}
 
 }
