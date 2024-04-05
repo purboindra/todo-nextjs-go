@@ -14,6 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { signIn } from "../api/auth/action";
+import Link from "next/link";
 
 const formSchema = z.object({
   email: z.string().refine((val) => val.includes("@"), "Email is not valid"),
@@ -88,6 +89,9 @@ export default function SignIn() {
             </LoadingButton>
           </form>
         </Form>
+        <Link href={"/sign-up"}>
+          <p className="mt-3 text-sm font-medium text-neutral-500 hover:cursor-pointer hover:text-neutral-600 hover:font-semibold">{`Don\'t have an account?`}</p>
+        </Link>
       </div>
     </main>
   );
