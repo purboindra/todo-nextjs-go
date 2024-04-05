@@ -60,7 +60,6 @@ export async function getAllTodos() {
     });
 
     if (result.status == 401) {
-      // cookiesStore.delete("token");
       redirect("/sign-in");
     }
 

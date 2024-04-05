@@ -1,61 +1,38 @@
 "use client";
 
-import { z } from "zod";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "./ui/form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "./ui/input";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { searchTodo } from "@/app/api/todo/actions";
+import { SearchIcon } from "lucide-react";
+import { useDebouncedCallback } from "use-debounce";
 
-export default function SearchFormField() {
+export default function SearchFormField({
+  placeholder,
+}: {
+  placeholder: string;
+}) {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
 
-  const searchSchema = z.object({
-    search: z.string().min(1, "Please eter a text"),
-  });
-
-  const form = useForm<z.infer<typeof searchSchema>>({
-    resolver: zodResolver(searchSchema),
-    defaultValues: {
-      search: "",
-    },
-  });
-
-  async function onSubmit(values: z.infer<typeof searchSchema>) {
+  const handleSearch = useDebouncedCallback((value: string) => {
     const params = new URLSearchParams(searchParams);
 
-    params.set("query", values.search);
+    params.set("query", value);
 
     replace(`${pathname}?${params.toString()}`);
-
-    // const result = await searchTodo(values.search);
-
-    // console.log(result);
-  }
+  }, 500);
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name="search"
-          render={({ field }) => (
-            <FormItem {...field}>
-              <FormLabel htmlFor="search">Search todo</FormLabel>
-              <FormControl>
-                <Input
-                  id="search"
-                  placeholder="Find your activity..."
-                  defaultValue={searchParams.get("query")?.toString()}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-      </form>
-    </Form>
+    <div className="relative flex flex-1 flex-shrink-0">
+      <label htmlFor="searc" className="sr-only">
+        Search
+      </label>
+      <input
+        className="block w-full rounded border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
+        onChange={(e) => handleSearch(e.target.value)}
+        placeholder={placeholder}
+        defaultValue={searchParams.get("query")?.toString()}
+      />
+      <SearchIcon className="absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2" />
+    </div>
   );
 }

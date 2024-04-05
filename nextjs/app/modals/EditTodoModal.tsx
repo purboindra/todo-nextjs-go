@@ -63,7 +63,6 @@ export default function EditTodoModal() {
     const data = JSON.stringify(values);
     formData.append("data", data);
     await editTodo(formData, todo?.id ?? "");
-    // revalidatePath("/");
   };
 
   const handleOpen = () => {

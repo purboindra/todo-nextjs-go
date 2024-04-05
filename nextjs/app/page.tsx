@@ -19,7 +19,7 @@ export default async function Home({
         TODO LIST
       </h1>
       <div className="mt-5 space-y-3">
-        <SearchFormField />
+        <SearchFormField placeholder="Search todo..." />
         <AddTodoButton />
       </div>
       <div className="px-5 items-center flex flex-col space-y-3">
