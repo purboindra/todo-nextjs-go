@@ -16,7 +16,11 @@ export default function SearchFormField({
   const handleSearch = useDebouncedCallback((value: string) => {
     const params = new URLSearchParams(searchParams);
 
-    params.set("query", value);
+    if (value) {
+      params.set("query", value);
+    } else {
+      params.delete("query");
+    }
 
     replace(`${pathname}?${params.toString()}`);
   }, 500);
