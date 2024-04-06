@@ -3,9 +3,7 @@ package models
 import (
 	"example/todo/db"
 	"log"
-	"sort"
 	"strconv"
-	"time"
 )
 
 type Todo struct {
@@ -69,15 +67,17 @@ func GetTodos(userId int64) ([]Todo, error) {
 		todos = append(todos, todo)
 	}
 
-	sort.Slice(todos, func(i, j int) bool {
-		time1, _ := time.Parse(todos[i].Created_at, "2006-01-02 15:04:05")
-		time2, _ := time.Parse(todos[j].Created_at, "2006-01-02 15:04:05")
+	// layout := "2006-01-02T15:04:05.000Z"
 
-		log.Println("TIME 1 IS", time1)
-		log.Println("TIME 2 IS", time2)
+	// sort.Slice(todos, func(i, j int) bool {
+	// 	time1, _ := time.Parse(layout, todos[i].Created_at)
+	// 	time2, _ := time.Parse(layout, todos[j].Created_at)
 
-		return time2.Before(time1)
-	})
+	// 	log.Println("TIME 1 IS", time1)
+	// 	log.Println("TIME 2 IS", time2)
+
+	// 	return time2.Before(time1)
+	// })
 
 	return todos, nil
 }
