@@ -100,6 +100,7 @@ export default function SignUp() {
                     <FormControl>
                       <Input
                         placeholder="Password should be 6 characters or more"
+                        type="password"
                         {...field}
                       />
                     </FormControl>{" "}

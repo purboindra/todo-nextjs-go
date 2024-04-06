@@ -80,7 +80,11 @@ export default function SignIn() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>
-                  <Input placeholder="Input your valid password" {...field} />
+                  <Input
+                    placeholder="Input your valid password"
+                    {...field}
+                    type="password"
+                  />
                 </FormItem>
               )}
             />
