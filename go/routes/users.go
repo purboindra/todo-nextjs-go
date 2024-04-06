@@ -104,6 +104,34 @@ func getUserById(context *gin.Context) {
 		})
 		return
 	}
-
 	context.JSON(http.StatusOK, result)
+}
+
+func getUser(context *gin.Context) {
+
+	token := context.Request.Header.Get("Authorization")
+
+	userId, err := utils.VerifyToken(token)
+
+	if err != nil {
+		context.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	result, err := models.GetUser(userId)
+
+	if err != nil {
+		context.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	context.JSON(http.StatusOK, gin.H{
+		"message": "Success get user",
+		"user":    result,
+	})
+
 }

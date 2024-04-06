@@ -155,6 +155,8 @@ func updateTodo(ctx *gin.Context) {
 
 	var updatedTodo models.Todo
 
+	log.Println(updatedTodo)
+
 	err = ctx.ShouldBindJSON(&updatedTodo)
 
 	if todo.UserId != strconv.FormatInt(userId, 10) {
