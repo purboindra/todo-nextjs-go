@@ -2,6 +2,7 @@ package utils
 
 import (
 	"errors"
+	"log"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -46,6 +47,8 @@ func VerifyToken(token string) (int64, error) {
 	if !ok {
 		return 0, errors.New("invalid token claims")
 	}
+
+	log.Println("EXPIRED: ", claims["exp"])
 
 	userId := int64(claims["userId"].(float64))
 

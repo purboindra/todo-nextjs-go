@@ -164,8 +164,6 @@ func SearchTodo(q string, userId int64) ([]Todo, error) {
 			return nil, err
 		}
 
-		log.Println("SEARCHHHHH", t)
-
 		todos = append(todos, t)
 	}
 
