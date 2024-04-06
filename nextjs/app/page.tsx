@@ -23,9 +23,9 @@ export default async function Home({
         <AddTodoButton />
       </div>
       <div className="px-5 items-center flex flex-col space-y-3">
-        {(result.length === 0 ? todos : result).map((todo, index) => (
-          <TodoItem key={index} todo={todo} />
-        ))}
+        {(!result ? todos : result ?? []).map((todo, index) => {
+          return <TodoItem key={index} todo={todo} />;
+        })}
       </div>
     </main>
   );
