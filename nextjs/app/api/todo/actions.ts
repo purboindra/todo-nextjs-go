@@ -73,6 +73,13 @@ export async function getAllTodos() {
       todos.push(todo);
     }
 
+    todos.sort((a, b) => {
+      const dateA = new Date(a.created_at);
+      const dateB = new Date(b.created_at);
+
+      return dateB.getTime() - dateA.getTime();
+    });
+
     return todos;
   } catch (error) {
     throw error;
@@ -187,6 +194,8 @@ export async function getTodoById(id: string) {
 
 export async function searchTodo(query: string) {
   console.log(`SEARCH TODO: ${query}`);
+
+  if (!query) return;
 
   try {
     const cookieStore = cookies();
