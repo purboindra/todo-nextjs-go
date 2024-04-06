@@ -70,7 +70,7 @@ export async function getAllTodos() {
     const data = await result.json();
 
     for (const todo of data.data) {
-      todos.push(todo);
+      todos = [...todos, todo];
     }
 
     todos.sort((a, b) => {
@@ -220,14 +220,12 @@ export async function searchTodo(query: string) {
 
     const data = await result.json();
 
-    console.log(`RESULT SEARCH: ${result.ok} -- ${data.data}`);
-
     if (!result.ok) {
       return [];
     }
 
     for (const todo of data.data) {
-      todos.push(todo);
+      todos = [...todos, todo];
     }
 
     return todos;
