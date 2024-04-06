@@ -160,7 +160,7 @@ func SearchTodo(q string, userId int64) ([]Todo, error) {
 
 	for rows.Next() {
 		var t Todo
-		if err := rows.Scan(&t.ID, &t.Title, &t.Description, &t.Created_at, &t.Updated_at, &t.UserId, &t.IsComplete); err != nil {
+		if err := rows.Scan(&t.ID, &t.Title, &t.Description, &t.Created_at, &t.Updated_at, &t.IsComplete, &t.UserId); err != nil {
 			return nil, err
 		}
 
@@ -172,6 +172,7 @@ func SearchTodo(q string, userId int64) ([]Todo, error) {
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
+
 	log.Println("ERROR EXEC QUERY", err)
 
 	return todos, nil
