@@ -4,8 +4,6 @@ import { TodoType } from "@/lib/type";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { todo } from "node:test";
-import { string } from "zod";
 
 export async function addTodo(formData: FormData) {
   const cookieStore = cookies();
@@ -193,8 +191,6 @@ export async function getTodoById(id: string) {
 }
 
 export async function searchTodo(query: string) {
-  console.log(`SEARCH TODO: ${query}`);
-
   if (!query) return;
 
   try {
@@ -218,11 +214,11 @@ export async function searchTodo(query: string) {
       }
     );
 
-    const data = await result.json();
-
     if (!result.ok) {
       return [];
     }
+
+    const data = await result.json();
 
     for (const todo of data.data) {
       todos = [...todos, todo];

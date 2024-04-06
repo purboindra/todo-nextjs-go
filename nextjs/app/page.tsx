@@ -2,8 +2,6 @@ import AddTodoButton from "@/components/AddTodoButton";
 import SearchFormField from "@/components/SearchFormField";
 import TodoItem from "@/components/TodoItem";
 import { getAllTodos, searchTodo } from "./api/todo/actions";
-import { Button } from "@/components/ui/button";
-import CategoryButton from "@/components/CategoryButton";
 
 export default async function Home({
   searchParams,
@@ -23,7 +21,6 @@ export default async function Home({
       <div className="mt-5 space-y-3">
         <SearchFormField placeholder="Search todo..." />
         <AddTodoButton />
-        <CategoryButton />
       </div>
       <div className="px-5 items-center flex flex-col space-y-3">
         {todos.length === 0 && !result ? (
